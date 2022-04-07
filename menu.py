@@ -13,8 +13,8 @@ import cmd
 
 
 class MenuCommand:                          #to jest COMMAND. Class used to encapsulate information needed by some other method in order to execute
-    def __init__(self, receiver):
-        self.receiver = receiver
+    def __init__(self, menu):
+        self.menu = menu
 
     def description(self):
         '''Zwróć nazwę z pozycji menu'''
@@ -30,18 +30,21 @@ class NewEventCommand(MenuCommand):
         '''...'''
         self.menu = menu                #to nie jest RECEIVER, an instance of a class that can execute the method, given the encapsulated information
 
-    def description(self):
-        return "Nowe wydarzenie."
-
     def __str__(self):
         return "Nowe wydarzenie"
-		
+
+    def description(self):
+        '''Dodaje wydarzenie'''
+        print("Nowe wydarzenie.")
+	
     def execute(self):
-        '''...'''
+        '''Uruchamia NewEventCommand'''
         self.description()
+        self.add_event()
     
     def add_event(self):
-        '''...'''
+        '''Dodaje wydarzenie'''
+        print("na razie nic")
 
 class ExportCommand(MenuCommand):
     def __init__(self, menu):
@@ -52,10 +55,11 @@ class ExportCommand(MenuCommand):
         return "Wyexportuj kalendarz"
 
     def description(self):
+        '''Exportuje wydarzenia'''
         return "Wyjście"
 		
     def execute(self):
-        '''...'''
+        '''Uruchamia ExportCommand'''
         self.description()
 
 class ListEventsCommand(MenuCommand):
@@ -67,55 +71,58 @@ class ListEventsCommand(MenuCommand):
         return "Wypisz wydarzenia"
 
     def description(self):
-        return "Wyjście"
+        '''Wypisuje wydarzenia'''
+        print("Wypisz wydarzenia")
 		
     def execute(self):
-        '''...'''
+        '''Uruchamia ListEventsCommand'''
         self.description()
 
 class ExitCommand(MenuCommand):                 #Class dedicated to Command Implementation
 
     def __init__(self, menu):
-        '''constructor'''               #w oryginale obok self tu było menu               
+        '''constructor'''                            
         self.menu = menu                #to nie jest RECEIVER, an instance of a class that can execute the method, given the encapsulated information
 
     def __str__(self):
         return "Wyjście"
 
-    def description(self):                      #czyli musi się połączyć z kolejnym modułem RECEIVER ktory robi cos z exitem
-        return "Wyjście"
-
+    def description(self):                     #czyli musi się połączyć z kolejnym modułem RECEIVER ktory robi cos z exitem
+        '''Zamknięcie kalendarza'''
+        print("Zamknięcie kalendarza")
 
     def execute(self):
-        '''Executes the exit command.'''
+        '''Wykonanie komendy wyjścia'''
         self.description()
-        print("nic sie nei dzieje")
 
 class Menu:                                  # to jest INVOKER ktory inicjuje subclassy MenuCommand. Decides when the method on the receiver will execute.
     def __init__(self):
         '''constructor'''
-        self.commands = []
-        self.cmd_num = 0
+        self._commands = []
+        self.dzialanie_menu = True
+        self.czy_dzialac = True
 
     def add_command(self, cmd):
-        '''adds menu items'''
+        '''Dodaje pozycje menu'''
         self.cmd = cmd
-        self.commands.append(cmd)
+        self._commands.append(cmd)
 
     def run(self):
         '''...'''
-        self._display_menu()
-        self._execute_selected_command()
+        while self.dzialanie_menu == True:
+            self._display_menu()
+            self._execute_selected_command()
 
 		
     def stop(self):
         '''...'''
 
     def _display_menu(self):
-        '''...'''
-        for cmd in self.commands:
-            self.cmd_num += 1
-            print(self.cmd_num, cmd)
+        '''Wyświetla dodane pozycje menu z listy'''
+        self._cmd_num = 0
+        for cmd in self._commands:
+            self._cmd_num += 1
+            print(self._cmd_num, cmd, "\n")
 
 
     def _execute_selected_command(self):
@@ -128,8 +135,27 @@ class Menu:                                  # to jest INVOKER ktory inicjuje su
         cmd = ...
         cmd.execute()
         '''
-        cmd_number = int(input("Select menu item (1-4):"))
-        if cmd
+        cmd_number = int(input("Dokonaj wyboru pozycji (1-4):"))
+# wiem, ze ogranicza mnie to do manualnego wpisania ilosci warunków, ale nie umiem innaczej
+        if cmd_number == 1:
+            #print(self._commands[0])
+            #self._commands[0].execute()
+            cmd = self._commands[0]
+            cmd.execute()
+        elif cmd_number == 2:
+            cmd = self._commands[1]
+            cmd.execute()
+        elif cmd_number == 3:
+            cmd = self._commands[2]
+            cmd.execute()
+        elif cmd_number == 4:
+            cmd = self._commands[3]
+            cmd.execute()
+            self.dzialanie_menu = False
+        else:
+            print("\n Niepoprawny numer. Wybierz jeszcze raz")
+
+
 
 
 #potem kod jest taki : 
