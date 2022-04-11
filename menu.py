@@ -9,7 +9,7 @@ Aby utworzyć własny wpis w menu musisz:
 '''
 
 
-import cmd
+from calendar import *
 
 
 class MenuCommand:                          #to jest COMMAND. Class used to encapsulate information needed by some other method in order to execute
@@ -136,6 +136,7 @@ class Menu:                                  # to jest INVOKER ktory inicjuje su
         cmd.execute()
         '''
         cmd_number = int(input("Dokonaj wyboru pozycji (1-4):"))
+        assert cmd_number == int, "błąd"   # <--- dlaczego to nie wychwytuje błędu?
 # wiem, ze ogranicza mnie to do manualnego wpisania ilosci warunków, ale nie umiem innaczej
         if cmd_number == 1:
             #print(self._commands[0])
